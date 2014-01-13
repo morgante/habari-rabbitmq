@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<pluggable type="plugin" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://schemas.habariproject.org/pluggable/0.8">
+	<name>Habari RabbitMQ</name>
+	<license url="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software License 2.0</license>
+	
+	<author url="http://morgante.net/">Morgante Pell</author>
+	
+	<version>0.1</version>
+	<url>http://github.com/morgante/habari-rabbitmq</url>
+	<description><![CDATA[This plugin provides RabbitMQ as a queue service to Habari.]]></description>
+
+	<copyright>2013</copyright>
+
+	<provides>
+		<feature url="http://wiki.habariproject.org/en/feature/queue">queue</feature>
+	</provides>
+</pluggable>
