@@ -1,14 +1,10 @@
 <?php
 
-namespace Habari;
-
 if ( !defined( 'HABARI_PATH' ) ) {
 	die( 'No direct access' );
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
-use PhpAmqpLib\Connection\AMQPConnection as AMQPConnection;
-use PhpAmqpLib\Message\AMQPMessage as AMQPMessage;
 
 class HabariRabbitMQ extends Plugin
 {
@@ -38,10 +34,10 @@ class HabariRabbitMQ extends Plugin
     {
         $ui = new FormUI( 'Hbook' );
 
-        $ui->append('text', 'host', 'option:rabbitmq__host')->label( _t('Host', 'rabbitmq') );
-        $ui->append('text', 'port', 'option:rabbitmq__port')->label( _t('Port', 'rabbitmq') );
-        $ui->append('text', 'user', 'option:rabbitmq__user')->label( _t('User', 'rabbitmq') );
-        $ui->append('text', 'pass', 'option:rabbitmq__pass')->label( _t('Password', 'rabbitmq') );
+        $ui->append('text', 'host', 'option:rabbitmq__host', _t('Host', 'rabbitmq') );
+        $ui->append('text', 'port', 'option:rabbitmq__port', _t('Port', 'rabbitmq') );
+        $ui->append('text', 'user', 'option:rabbitmq__user', _t('User', 'rabbitmq') );
+        $ui->append('text', 'pass', 'option:rabbitmq__pass', _t('Password', 'rabbitmq') );
 
 
         $ui->append( 'submit', 'save', _t( 'Save' ) );
@@ -54,7 +50,7 @@ class HabariRabbitMQ extends Plugin
             $this->make_queue( $queue );
         }
 
-        $message = new AMQPMessage( $message );
+        $message = new PhpAmqpLib\Message\AMQPMessage( $message );
         $this->channel()->basic_publish($message, '', $queue);
     }
 
@@ -89,7 +85,7 @@ class HabariRabbitMQ extends Plugin
     {
         if ( !isset( $this->_connection ) ) {
             $opts = Options::get_group( 'rabbitmq' );
-            $this->_connection = new AMQPConnection($opts['host'], $opts['port'], $opts['user'], $opts['pass']);
+            $this->_connection = new PhpAmqpLib\Connection\AMQPConnection($opts['host'], $opts['port'], $opts['user'], $opts['pass']);
         }
         return $this->_connection;
     }
