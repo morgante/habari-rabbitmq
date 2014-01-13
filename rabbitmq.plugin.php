@@ -38,6 +38,7 @@ class HabariRabbitMQ extends Plugin
         $ui->append('text', 'port', 'option:rabbitmq__port', _t('Port', 'rabbitmq') );
         $ui->append('text', 'user', 'option:rabbitmq__user', _t('User', 'rabbitmq') );
         $ui->append('text', 'pass', 'option:rabbitmq__pass', _t('Password', 'rabbitmq') );
+        $ui->append('text', 'pass', 'option:rabbitmq__vhost', _t('Virtual Host', 'rabbitmq') );
 
 
         $ui->append( 'submit', 'save', _t( 'Save' ) );
@@ -85,7 +86,7 @@ class HabariRabbitMQ extends Plugin
     {
         if ( !isset( $this->_connection ) ) {
             $opts = Options::get_group( 'rabbitmq' );
-            $this->_connection = new PhpAmqpLib\Connection\AMQPConnection($opts['host'], $opts['port'], $opts['user'], $opts['pass']);
+            $this->_connection = new PhpAmqpLib\Connection\AMQPConnection($opts['host'], $opts['port'], $opts['user'], $opts['pass']. $opts['vhost']);
         }
         return $this->_connection;
     }
