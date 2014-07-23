@@ -1,20 +1,25 @@
 <?php
 
-namespace Habari;
-
 if ( !defined( 'HABARI_PATH' ) ) {
 	die( 'No direct access' );
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
-use PhpAmqpLib\Connection\AMQPConnection as AMQPConnection;
-use PhpAmqpLib\Message\AMQPMessage as AMQPMessage;
 
 class HabariRabbitMQ extends Plugin
 {
     private $_connection;
     private $_channel;
     private $_queues = array(); // internal cache of queues we have declared
+
+    private function get_opts()
+    {
+        $opts = Options::get_group( 'rabbitmq' );
+
+        $opts = Plugins::filter( 'rabbitmq_options', $opts );
+
+        return $opts;
+    }
 
     /**
      * function action_plugin_activation
@@ -54,7 +59,7 @@ class HabariRabbitMQ extends Plugin
             $this->make_queue( $queue );
         }
 
-        $message = new AMQPMessage( $message );
+        $message = new PhpAmqpLib\Message\AMQPMessage( $message );
         $this->channel()->basic_publish($message, '', $queue);
     }
 
@@ -88,8 +93,8 @@ class HabariRabbitMQ extends Plugin
     private function connection()
     {
         if ( !isset( $this->_connection ) ) {
-            $opts = Options::get_group( 'rabbitmq' );
-            $this->_connection = new AMQPConnection($opts['host'], $opts['port'], $opts['user'], $opts['pass']);
+            $opts = $this->get_opts();
+            $this->_connection = new PhpAmqpLib\Connection\AMQPConnection($opts['host'], $opts['port'], $opts['user'], $opts['pass']);
         }
         return $this->_connection;
     }
