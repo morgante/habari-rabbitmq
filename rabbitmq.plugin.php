@@ -53,31 +53,10 @@ class HabariRabbitMQ extends Plugin
         $ui->out();
     }
 
-    public function action_queue_send( $queue, $message )
+    public function action_queue_send( $routing, $message )
     {
-        if (!$this->has_queue( $queue ) ) {
-            $this->make_queue( $queue );
-        }
-
         $message = new PhpAmqpLib\Message\AMQPMessage( $message );
-        $this->channel()->basic_publish($message, '', $queue);
-    }
-
-    /*
-        name: name of the queue
-        passive: false
-        durable: true // the queue will survive server restarts
-        exclusive: false // the queue can be accessed in other channels
-        auto_delete: false //the queue won't be deleted once the channel is closed.
-    */
-    private function make_queue( $name, $passive = false, $durable = true, $exclusive = false, $auto_delete = false )
-    {
-        $this->_queues[ $name ] = $this->channel()->queue_declare($name, $passive, $durable, $exclusive, $auto_delete);
-    }
-
-    private function has_queue( $name )
-    {
-        return isset( $this->_queues[ $name ] );
+        $this->channel()->basic_publish($message, $routing['exchange'], $routing['key']);
     }
 
     private function set_defaults()
