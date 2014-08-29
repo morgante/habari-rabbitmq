@@ -55,7 +55,7 @@ class HabariRabbitMQ extends Plugin
 
     public function action_queue_send( $routing, $message )
     {
-        $message = new PhpAmqpLib\Message\AMQPMessage( $message );
+        $message = new PhpAmqpLib\Message\AMQPMessage( json_encode( $message ) );
         $this->channel()->basic_publish($message, $routing['exchange'], $routing['key']);
     }
 
