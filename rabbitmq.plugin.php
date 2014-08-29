@@ -65,7 +65,8 @@ class HabariRabbitMQ extends Plugin
             'host' => '127.0.0.1',
             'port' => 5672,
             'user' => 'guest',
-            'pass' => 'guest'
+            'pass' => 'guest',
+            'vhost' => '/'
         ));
     }
 
@@ -73,7 +74,7 @@ class HabariRabbitMQ extends Plugin
     {
         if ( !isset( $this->_connection ) ) {
             $opts = $this->get_opts();
-            $this->_connection = new PhpAmqpLib\Connection\AMQPConnection($opts['host'], $opts['port'], $opts['user'], $opts['pass']);
+            $this->_connection = new PhpAmqpLib\Connection\AMQPConnection($opts['host'], $opts['port'], $opts['user'], $opts['pass'], $opts['vhost']);
         }
         return $this->_connection;
     }
