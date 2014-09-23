@@ -43,11 +43,13 @@ class HabariRabbitMQ extends Plugin
     {
         $ui = new FormUI( 'Hbook' );
 
-        $ui->append('text', 'host', 'option:rabbitmq__host')->label( _t('Host', 'rabbitmq') );
-        $ui->append('text', 'port', 'option:rabbitmq__port')->label( _t('Port', 'rabbitmq') );
-        $ui->append('text', 'user', 'option:rabbitmq__user')->label( _t('User', 'rabbitmq') );
-        $ui->append('text', 'pass', 'option:rabbitmq__pass')->label( _t('Password', 'rabbitmq') );
+        // $ui->append('text', 'host', 'option:rabbitmq__host')->label( _t('Host', 'rabbitmq') );
+        // $ui->append('text', 'port', 'option:rabbitmq__port')->label( _t('Port', 'rabbitmq') );
+        // $ui->append('text', 'user', 'option:rabbitmq__user')->label( _t('User', 'rabbitmq') );
+        // $ui->append('text', 'pass', 'option:rabbitmq__pass')->label( _t('Password', 'rabbitmq') );
 
+        $opts = $this->get_opts();
+        Utils::debug($opts);
 
         $ui->append( 'submit', 'save', _t( 'Save' ) );
         $ui->out();
